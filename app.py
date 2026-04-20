@@ -1,54 +1,24 @@
 import streamlit as st
 
-st.title("Ejemplo de botones personalizados")
+st.title("Subir Documento")
+st.write("Selecciona un archivo para subir.")
 
 st.markdown("""
 <style>
-/* Botón verde */
-div[data-testid="stButton"]:nth-of-type(1) button {
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 8px;
+section[data-testid="stFileUploadDropzone"] button {
+    background-color: #28a745 !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 8px !important;
 }
-div[data-testid="stButton"]:nth-of-type(1) button:hover {
-    background-color: #218838;
-}
-
-/* Botón azul */
-div[data-testid="stButton"]:nth-of-type(2) button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 8px;
-}
-div[data-testid="stButton"]:nth-of-type(2) button:hover {
-    background-color: #0056b3;
-}
-
-/* Botón naranja */
-div[data-testid="stButton"]:nth-of-type(3) button {
-    background-color: #fd7e14;
-    color: white;
-    border: none;
-    border-radius: 8px;
-}
-div[data-testid="stButton"]:nth-of-type(3) button:hover {
-    background-color: #e8650a;
+section[data-testid="stFileUploadDropzone"] button:hover {
+    background-color: #218838 !important;
 }
 </style>
 """, unsafe_allow_html=True)
 
-col1, col2, col3 = st.columns(3)
+archivo = st.file_uploader("", type=["pdf", "docx", "txt", "xlsx"])
 
-with col1:
-    if st.button("Botón Verde"):
-        st.success("¡Hiciste clic en Verde!")
-
-with col2:
-    if st.button("Botón Azul"):
-        st.info("¡Hiciste clic en Azul!")
-
-with col3:
-    if st.button("Botón Naranja"):
-        st.warning("¡Hiciste clic en Naranja!")
+if archivo is not None:
+    st.success(f"Archivo subido: **{archivo.name}**")
+    st.write(f"Tipo: `{archivo.type}` | Tamaño: `{archivo.size / 1024:.1f} KB`")
