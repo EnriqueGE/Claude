@@ -5,20 +5,48 @@ st.write("Selecciona un archivo para subir.")
 
 st.markdown("""
 <style>
-section[data-testid="stFileUploadDropzone"] button {
-    background-color: #28a745 !important;
-    color: white !important;
-    border: none !important;
-    border-radius: 8px !important;
+/* Ocultar el file_uploader original */
+[data-testid="stFileUploader"] {
+    display: none;
 }
-section[data-testid="stFileUploadDropzone"] button:hover {
-    background-color: #218838 !important;
+
+/* Botón verde personalizado */
+.boton-verde {
+    display: inline-block;
+    background-color: #28a745;
+    color: white !important;
+    padding: 12px 28px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    text-align: center;
+    margin: 10px 0;
+}
+.boton-verde:hover {
+    background-color: #218838;
 }
 </style>
+
+<label for="file-input" class="boton-verde">📂 Seleccionar archivo</label>
+<input id="file-input" type="file" accept=".pdf,.docx,.txt,.xlsx"
+    style="display:none"
+    onchange="handleFile(this)">
+
+<div id="resultado" style="margin-top:16px; font-size:15px;"></div>
+
+<script>
+function handleFile(input) {
+    const file = input.files[0];
+    if (file) {
+        const kb = (file.size / 1024).toFixed(1);
+        document.getElementById('resultado').innerHTML =
+            '<div style="padding:12px;background:#d4edda;border-radius:8px;color:#155724;">'
+            + '✅ <strong>Archivo cargado:</strong> ' + file.name
+            + '<br>Tipo: <code>' + file.type + '</code> | Tamaño: <code>' + kb + ' KB</code>'
+            + '</div>';
+    }
+}
+</script>
 """, unsafe_allow_html=True)
-
-archivo = st.file_uploader("", type=["pdf", "docx", "txt", "xlsx"])
-
-if archivo is not None:
-    st.success(f"Archivo subido: **{archivo.name}**")
-    st.write(f"Tipo: `{archivo.type}` | Tamaño: `{archivo.size / 1024:.1f} KB`")
